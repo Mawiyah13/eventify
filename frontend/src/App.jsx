@@ -9,6 +9,7 @@ import AdminRoute from "./components/AdminRoute";
 import AdminRegistration from "./pages/AdminRegistrations";
 import MyEvents from "./pages/MyEvents";
 import CreateEvent from "./pages/CreateEvent";
+import EventDetails from "./pages/EventDetails";
 
 function App() {
   return (
@@ -60,6 +61,8 @@ function App() {
                 </AdminRoute>
               }
             />
+            <Route path="/event/:id" element={<EventDetails />} />
+
           </Routes>
         </div>
 

@@ -30,6 +30,27 @@ const eventSchema = mongoose.Schema(
     imageUrl: {
       type: String,
     },
+    // NEW FIELDS
+    price: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    category: {
+      type: String,
+      enum: ['free', 'paid'],
+      required: true,
+      default: 'free',
+    },
+    duration: {
+      type: String, // e.g., "2 hours", "1 day"
+    },
+    organizer: {
+      type: String,
+    },
+    tags: [{
+      type: String,
+    }],
     registeredUsers: [
       {
         type: mongoose.Schema.Types.ObjectId,

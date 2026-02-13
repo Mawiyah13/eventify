@@ -11,28 +11,35 @@ import {
   getMyEvents,
 } from "../controllers/eventController.js";
 
-import { protect } from "../middleware/authMiddleware.js";
+import {
+  createRazorpayOrder,
+  verifyRazorpayPayment,
+  getPaymentDetails,
+} from "../controllers/eventController.js"; // or paymentController.js if separate
 
+import { protect } from "../middleware/authMiddleware.js";
 import { adminOnly } from "../middleware/adminMiddleware.js";
 
 const router = express.Router();
 
-// Public
+// Payment routes (must come before /:id routes)
+router.post("/payment/create-order", protect, createRazorpayOrder);
+router.post("/payment/verify", protect, verifyRazorpayPayment);
+router.get("/payment/:paymentId", protect, getPaymentDetails);
+
+// Public routes
 router.get("/", getEvents);
-router.get("/my-events", protect, getMyEvents);
 router.get("/:id", getEventById);
 
-// Admin
-router.post("/", protect, adminOnly, createEvent);
-router.put("/:id", protect, adminOnly, updateEvent);
-router.delete("/:id", protect, adminOnly, deleteEvent);
-
-
-// User registration
+// User routes (protected)
+router.get("/user/my-events", protect, getMyEvents);
 router.post("/:id/register", protect, registerForEvent);
 router.post("/:id/unregister", protect, unregisterFromEvent);
 
-// Admin registrations view
+// Admin routes
+router.post("/", protect, adminOnly, createEvent);
+router.put("/:id", protect, adminOnly, updateEvent);
+router.delete("/:id", protect, adminOnly, deleteEvent);
 router.get("/:id/registrations", protect, adminOnly, getRegistrations);
 
 export default router;

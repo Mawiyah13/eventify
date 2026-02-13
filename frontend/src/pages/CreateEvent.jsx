@@ -10,7 +10,7 @@ const CreateEvent = () => {
   const [capacity, setCapacity] = useState("");
   const [location, setLocation] = useState("");
   const [date, setDate] = useState("");
-  const [image, setImage] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,10 +19,10 @@ const CreateEvent = () => {
       await API.post("/events", {
         title,
         description,
-        capacity,
+        capacity: Number(capacity),
         location,
         date,
-        image,
+        imageUrl: imageUrl.trim(),
       });
 
       alert("Event created successfully!");
@@ -102,8 +102,8 @@ const CreateEvent = () => {
           <label>Image URL (optional)</label><br />
           <input
             type="text"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
           />
         </div>
 

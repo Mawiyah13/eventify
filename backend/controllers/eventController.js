@@ -32,7 +32,7 @@ export const getEventById = async (req, res) => {
    ======================= */
 export const createEvent = async (req, res) => {
   try {
-    const { title, description, capacity, location, date, image } = req.body;
+    const { title, description, capacity, location, date, imageUrl } = req.body;
 
     const event = await Event.create({
       title,
@@ -40,7 +40,7 @@ export const createEvent = async (req, res) => {
       capacity,
       location,
       date,
-      image,
+      imageUrl,
       registeredUsers: [],
       createdBy: req.user._id,
     });

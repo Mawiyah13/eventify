@@ -1,85 +1,41 @@
-import React, { useEffect, useState } from "react";
-import API from "../services/api";
-import EventCard from "../components/EventCard";
+import React from "react";
 import { Link } from "react-router-dom";
 
-const Home = () => {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await API.get("/events");
-        setEvents(response.data);
-      } catch (error) {
-        console.error("Failed to fetch events");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEvents();
-  }, []);
-
+const EventCard = ({ event }) => {
   return (
-    <div>
-      {/* 🌟 HERO SECTION */}
-      <div className="text-center py-16">
-        <h1 className="text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          Discover & Manage Amazing Events
-        </h1>
+    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
 
-        <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
-          Eventify helps you create, manage, and attend events effortlessly.
-          Explore exciting upcoming events and be part of something amazing.
+      {/* 🖼 Event Image */}
+      {event.imageUrl && (
+        <img
+          src={event.imageUrl}
+          alt={event.title}
+          className="w-full h-48 object-cover"
+        />
+      )}
+
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-gray-800 mb-2">
+          {event.title}
+        </h3>
+
+        <p className="text-gray-600 text-sm mb-1">
+          📅 {new Date(event.date).toLocaleDateString()}
         </p>
 
-        <div className="mt-8 flex justify-center gap-4">
-          <Link
-            to="/register"
-            className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold shadow-md hover:scale-105 transition"
-          >
-            Get Started
-          </Link>
+        <p className="text-gray-600 text-sm mb-3">
+          📍 {event.location}
+        </p>
 
-          <Link
-            to="/dashboard"
-            className="px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-100 transition"
-          >
-            View Dashboard
-          </Link>
-        </div>
-      </div>
-
-      {/* 📅 EVENTS SECTION */}
-      <div className="mt-12">
-        <h2 className="text-3xl font-bold mb-8 text-gray-800">
-          Upcoming Events
-        </h2>
-
-        {loading && (
-          <p className="text-gray-500">Loading events...</p>
-        )}
-
-        {!loading && events.length === 0 && (
-          <div className="bg-white p-8 rounded-2xl shadow text-center">
-            <p className="text-gray-500 text-lg">
-              No events available at the moment.
-            </p>
-          </div>
-        )}
-
-        {/* 🧩 Event Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {!loading &&
-            events.map((event) => (
-              <EventCard key={event._id} event={event} />
-            ))}
-        </div>
+        <Link
+          to={`/event/${event._id}`}
+          className="inline-block mt-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium hover:scale-105 transition"
+        >
+          View Details
+        </Link>
       </div>
     </div>
   );
 };
 
-export default Home;
+export default EventCard;

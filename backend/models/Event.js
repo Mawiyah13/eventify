@@ -27,6 +27,9 @@ const eventSchema = mongoose.Schema(
       required: true,
       default: 80,
     },
+    imageUrl: {
+      type: String,
+    },
     registeredUsers: [
       {
         type: mongoose.Schema.Types.ObjectId,
